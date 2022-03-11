@@ -1,0 +1,11 @@
+<!--Con routerLink le decimos que queremos ir a la ruta product donde se renderizara dinamicamente el detalle del producto seleccionado. concatenamos la ruta enviando el id del producto seleccionado y recuerda en el componente product-detail recibimos este ide para traer de la API el producto seleccionado. Con esto cada que el damos click a la imagen de un producto deberiamos ir a ver el detalle del producto en la ruta product:-->
+<a href="" [routerLink]="['/product', product.id]">
+  <app-img *ngIf="product.images.length > 0" [img]="product.images[0]"></app-img>
+</a>
+<h2 class="title">{{ product.price | currency }}</h2>
+<p>{{ product.title }}</p>
+<p class="category">{{ product.category?.name }}</p>
+<!-- <button  (click)="onShowDetail()">Ver detalle</button>. Borramos porque vamos a usar ahora un <a> para abrir el detalle del producto -->
+<!--agregamos un routerLink para decirle que vaya a cualquier ruta gracias al punto (antes el routerLink tenia como valor "/home" para que fuera al home") cuando estemos en la ruta product y luego enviamos los parámetros, los queryParamas. Y le asignamos con un objeto que cada vez que le demos un click aquí en este tag <a> le enviemos el Queryparam product con el id del producto seleccionado:-->
+<a routerLink="." [queryParams]="{product: product.id}">Ver detalle</a>
+<button (click)="onAddToCart()">Add cart</button>

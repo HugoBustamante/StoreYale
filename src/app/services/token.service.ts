@@ -15,4 +15,9 @@ export class TokenService {
     const token = localStorage.getItem('token');
     return token;
   }
+
+  //Metodo para eliminar el Token. Este metodo lo tenemos que conectar a neustro servicio de Auth:
+  removeToken(){
+    localStorage.removeItem('token')//Eliminamos el token que se almacena en el localStorage.
+  }
 }

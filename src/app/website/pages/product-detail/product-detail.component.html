@@ -1,0 +1,22 @@
+<!--Acá renderizaremos el detalle del producto seleccionado en la App-->
+<div class="page-product">
+  <button (click)="goToBack()">Back</button><!--Retrocederemos hacia atras-->
+  <!--Si tenemos un producto mostramos el siguiente container:-->
+  <div class="detail" *ngIf="product">
+    <!--Contenedor para las galerias que traemos con la libreria de swiper-->
+    <div class="gallery">
+      <swiper [slidesPerView]="1"><!--Cuantas imagenes se van a mostrar al mismo tiempo-->
+        <!--Por cada imagen vamos a renderizarlas en el tag de img:-->
+        <ng-template swiperSlide *ngFor="let img of product?.images">
+          <img [src]="img" alt="img" />
+        </ng-template>
+      </swiper>
+    </div>
+    <!--Contenedor para renderizar el resto de informacion del producto que trajimos desde la APi-->
+    <div>
+      <h1>{{ product?.title }}</h1>
+      <h2>{{ product?.price | currency }}</h2>
+      <p>{{ product?.description }}</p>
+    </div>
+  </div>
+</div>

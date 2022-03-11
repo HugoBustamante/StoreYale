@@ -1,0 +1,60 @@
+<div class="show-mobile">
+  <div>
+    <button (click)="toggleMenu()">
+      <img src="./assets/svg/icon_menu.svg" alt="menu">
+    </button>
+    <a href="">
+      <img src="./assets/svg/logo_yard_sale.svg" alt="logo">
+    </a>
+    <div class="cart">
+      <a href="">
+        <img src="./assets/svg/icon_shopping_cart.svg" alt="logo">
+      </a>
+      <span class="counter">{{ counter }}</span>
+    </div>
+
+  </div>
+  <div class="side-menu" [class.active]="activeMenu">
+    <button (click)="toggleMenu()">Close</button>
+    <ul>
+      <!--Establecemos para esta opcion la ruta del home con el routerLink. Para que sea el home de la app. También le agregamos el routerLinkActive para que este activa la accion cuando este seleccionada. Cuando este seleccionada se aplicara los estilos estilizados para la clase active:-->
+      <li><a routerLinkActive="active" href="">All</a></li>
+      <!--Renderizamos las categorias de forma dinamica. Recorremos con un *ngFor los productos de cada categoria del array categories donde almacenamos los productos de la categorias traidas desde la API de platzi: -->
+      <li *ngFor="let category of categories">
+        <a routerLinkActive="active" [routerLink]="['/category', category.id]">{{category.name}}</a><!--Imprimimos cada categoria con su nombre de forma dinamica y con un routerLink indicamos la ruta de las categorias para que dinamicamente dependiendo de la categoria a la que le demos click, esta se vaya a la ruta con los productos renderizados de dicha categoria con ese id-->
+      </li>
+    </ul>
+  </div>
+</div>
+<div class="hide-mobile">
+  <div>
+    <nav>
+      <a class="logo" href="">
+        <img src="./assets/svg/logo_yard_sale.svg" alt="logo">
+      </a>
+      <ul>
+        <!--Establecemos para esta opcion la ruta del home con el routerLink. Para que sea el home de la app. También le agregamos el routerLinkActive para que este activa la accion cuando este seleccionada. Cuando este seleccionada se aplicara los estilos estilizados para la clase active:-->
+        <li ><a routerLink="home" routerLinkActive="active">All</a></li>
+        <!--Renderizamos las categorias de forma dinamica. Recorremos con un *ngFor los productos de cada categoria del array categories: -->
+        <li *ngFor="let category of categories">
+        <a routerLinkActive="active" [routerLink]="['/category', category.id]">{{category.name}}</a><!--Imprimimos cada categoria con su nombre de forma dinamica y con un routerLink indicamos la ruta de las categorias para que dinamicamente dependiendo de la categoria a la que le demos click, esta se vaya a la ruta con los productos renderizados de dicha categoria con ese id-->
+      </li>
+      </ul>
+    </nav>
+    <div class="info">
+      <div class="account">
+        <button *ngIf="!profile; else elseBlock" (click)="login()">Login</button>
+        <ng-template #elseBlock>
+          <a routerLink="/profile">{{profile?.email}}</a><!--Si hay un login y damos click al login nos redirifira inmediatamente a la ruta profile, gracias a que agregamos el router link en esta etiqueta. Con esto ya tenemos un rol de tipo cliente-->
+          <button type="button" (click)="logout()">Logout</button><!--Boton para cerrar sesión-->
+        </ng-template>
+      </div>
+      <div class="cart">
+        <a href="">
+          <img src="./assets/svg/icon_shopping_cart.svg" alt="logo">
+        </a>
+        <span class="counter">{{ counter }}</span>
+      </div>
+    </div>
+  </div>
+</div>

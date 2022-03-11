@@ -1,0 +1,6 @@
+<!--Se encargara de renderizar los productos y al mismo tiempo procesar el Output traido del mismo componente products para ejecutar la accion de cargar más productos de la API:-->
+<!--Le enviamos el id al Input @productId del componente products:-->
+<app-products
+[productId]="productId"
+[products]="products"
+(loadMore)="loadMore()"></app-products>

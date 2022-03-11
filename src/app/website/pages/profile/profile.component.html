@@ -1,0 +1,9 @@
+<!--Renderizamos el perfil del usuario-->
+<div *ngIf="user">
+    <h1>Perfil:</h1>
+    <p>{{user.name}}</p>
+    <p>{{user.email}}</p>
+    <p>{{user.role}}</p>
+    <!--Si el usuario tiene un rol de administrador se le habilitará este boton para ir al CMS-->
+    <a *ngIf="user.role==='admin'" routerLink="/cms">Ir al CMS</a>
+</div>

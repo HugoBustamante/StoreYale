@@ -1,42 +1,39 @@
-import { Component, OnInit } from '@angular/core';
-import { switchMap } from 'rxjs/operators';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import {
   Product,
   CreateProductDTO,
   UpdateProductDTO,
-} from '../../models/product.model';
+} from '../../../models/product.model';
 
-import { StoreService } from '../../services/store.service';
-import { ProductsService } from '../../services/products.service';
+import { StoreService } from './../../../services/store.service';
+import { ProductsService } from './../../../services/products.service';
+
 
 @Component({
   selector: 'app-products',
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.scss'],
 })
-export class ProductsComponent implements OnInit {
+export class ProductsComponent {
   myShoppingCart: Product[] = [];
   total = 0;
-  products: Product[] = [];
+  @Input () products: Product[] = []; //Transformamos este array para mandarlo a un componente externo padre
+  @Output () onLoadMore = new EventEmitter(); //Emitimos a un componente padre la accion de click en cargar más
   showProductDetail = false;
   productChosen: Product | null = null;
-  limit = 10;
-  offset = 0;
   statusDetail: 'loading' | 'success' | 'error' | 'init' = 'init';
+  @Input() set productId (id: string | null) {//Le pasaremos el id.
+      if(id){//Si id existe
+        this.onShowDetail(id);//Con esto simplemente con el hecho de enviarle el id que queremos mostrar a este componente products, mostrariamos y ejecutariamos la logica de onShowDetail()
+      }
+  }
 
   constructor(
     private storeService: StoreService,
     private productsService: ProductsService
   ) {
     this.myShoppingCart = this.storeService.getShoppingCart();
-  }
-
-  ngOnInit(): void {
-    this.productsService.getAll(10, 0).subscribe((data) => {
-      this.products = data;
-      this.offset += this.limit;
-    });
   }
 
   onAddToShoppingCart(product: Product) {
@@ -48,9 +45,13 @@ export class ProductsComponent implements OnInit {
     this.showProductDetail = !this.showProductDetail;
   }
 
+  //En este metodo generamos un request para obtener un producto por medio de su id, el detalle del producto:
   onShowDetail(id: string) {
     this.statusDetail = 'loading';
-    this.toggleProductDetail();
+    //this.toggleProductDetail();
+    if(!this.showProductDetail){//Si el detalle está cerrado (el layout con el detalle), lo abrimos inmediatamente
+      this.showProductDetail= true;
+    }
     this.productsService.getOne(id).subscribe(
       (data) => {
         this.productChosen = data;
@@ -104,11 +105,8 @@ export class ProductsComponent implements OnInit {
       });
     }
   }
-
+  //Metodo donde emitimos el click del boton de cargar más productos hacia un componente externo
   loadMore() {
-    this.productsService.getAll(this.limit, this.offset).subscribe((data) => {
-      this.products = this.products.concat(data);
-      this.offset += this.limit;
-    });
-  }
+    this.onLoadMore.emit();//Si no egremos parametros el emit tomara de referencia el evento que recibe este metodo, en este caso el clik al boton  cargar más
+  };
 }

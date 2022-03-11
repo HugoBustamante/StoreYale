@@ -1,0 +1,6 @@
+<!--Se encargara de renderizar los productos y tambien agregamos como evento el output que nos trae la accion del click hacia el boton load more para cargar más productos, para ello agregamos el evento loadMore que tendrá la logica y estará cominicado con el @output: (onLoadMore):-->
+<app-products
+[productId]="productId"
+[products]="products"
+(onLoadMore)="loadMore()"
+></app-products>
